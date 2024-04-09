@@ -1,28 +1,29 @@
-// Récupération des données JSON
-async function getRecipes() {
+// Fonction pour récupérer les données JSON
+async function fetchRecipes() {
   try {
     const response = await fetch("data.json");
-    let recipes = await response.json();
-    recipes = recipes.recettes // Plus facile à manipuler
-    displayRecipes(recipes);
+    const jsonData = await response.json();
+    return jsonData.recettes;
   } catch (error) {
-    console.error("Erreur lors du chargement des tâches:", error);
+    console.error("Erreur lors du chargement des recettes:", error);
   }
 }
 
+// Fonction pour afficher les recettes
 function displayRecipes(recipes) {
-  const containerRecipes = document.querySelector("section");
+  const container = document.querySelector("section");
+  container.innerHTML = "";
+
   recipes.forEach((recipe) => {
     const ingredientsHtml = recipe.ingredients.map(
       (ingredient) => `<li class="list-group-item">${ingredient.nom}: ${ingredient.quantite}</li>`
     ).join("");
-    console.log(ingredientsHtml);
+
     const stepsHtml = recipe.etapes.map(
       (step) => `<li class="list-group-item">${step}</li>`
     ).join("");
 
-    // Création des éléments HTML à chaque ittération
-    containerRecipes.innerHTML += `
+    const recipeHtml = `
       <article class="col-sm-12 col-md-4">
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
@@ -42,7 +43,32 @@ function displayRecipes(recipes) {
           </li>
         </ul>
       </article>`;
+
+    container.innerHTML += recipeHtml;
   });
 }
 
-getRecipes();
+// Fonction pour filtrer les recettes
+function filterRecipes(recipes, searchTerm) {
+  const lowerCaseSearchTerm = searchTerm.toLowerCase();
+  return recipes.filter((recipe) => {
+    return (
+      recipe.nom.toLowerCase().includes(lowerCaseSearchTerm) ||
+      recipe.ingredients.some((ingredient) => ingredient.nom.toLowerCase().includes(lowerCaseSearchTerm))
+    );
+  });
+}
+
+// Démarrage de l'application
+fetchRecipes().then((recipes) => {
+  // Accéder et afficher les recettes
+  console.log(recipes);
+  displayRecipes(recipes);
+
+  // Fonction de recherche
+  const searchBar = document.getElementById("search");
+  searchBar.addEventListener("input", (event) => {
+    const filteredRecipes = filterRecipes(recipes, event.target.value);
+    displayRecipes(filteredRecipes);
+  });
+});
