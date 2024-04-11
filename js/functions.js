@@ -18,17 +18,17 @@ function displayRecipes(recipes) {
         <article class="col-sm-12 col-md-4">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
-              <h3>${recipe.nom} <i id='${recipe.id}' class="fa-regular fa-star" onclick="addFavorite('${recipe.nom}', '${recipe.id}')"></i></h3>
+              <h3 data-bs-toggle="collapse" data-bs-target=".recipeDetails-${recipe.id}">${recipe.nom} <i id='${recipe.id}' class="fa-regular fa-star" onclick="addFavorite('${recipe.nom}', '${recipe.id}')"></i></h3>
             </li>
             <li class="list-group-item">
               <h4>${recipe.categorie}</h4>
               <p><i class="fa-regular fa-clock"></i>${recipe.temps_preparation}</p>
             </li>
-            <li class="list-group-item">
+            <li class="list-group-item collapse recipeDetails-${recipe.id}">
               <h4>Ingrédients</h4>
               <ul class="list-group list-group-flush">${ingredientsHtml}</ul>
             </li>
-            <li class="list-group-item">
+            <li class="list-group-item collapse recipeDetails-${recipe.id}">
               <h4>Étapes</h4>
               <ol class="list-group list-group-numbered list-group-flush">${stepsHtml}</ol>
             </li>
@@ -102,22 +102,23 @@ async function fetchRecipes() {
       const stepsHtml = recipes[numbers[i]].etapes.map(
         (step) => `<li class="list-group-item">${step}</li>`
       ).join("");
-  
+
       const recipeHtml = `
       <article class="col-sm-12 col-md-4">
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
-            <h3>${recipes[numbers[i]].nom}</h3>
+            <h3 data-bs-toggle="collapse" data-bs-target=".recipeDetails-random-${recipes[numbers[i]].id}">${recipes[numbers[i]].nom} <i id='${recipes[numbers[i]].id}' class="fa-regular fa-star" onclick="addFavorite('${recipes[numbers[i]].nom}', '${recipes[numbers[i]].id}')"></i></h3>
+
           </li>
           <li class="list-group-item">
             <h4>${recipes[numbers[i]].categorie}</h4>
             <p><i class="fa-regular fa-clock"></i>${recipes[numbers[i]].temps_preparation}</p>
           </li>
-          <li class="list-group-item">
+          <li class="list-group-item collapse recipeDetails-random-${recipes[numbers[i]].id}">
             <h4>Ingrédients</h4>
             <ul class="list-group list-group-flush">${ingredientsHtml}</ul>
           </li>
-          <li class="list-group-item">
+          <li class="list-group-item collapse recipeDetails-random-${recipes[numbers[i]].id}"">
             <h4>Étapes</h4>
             <ol class="list-group list-group-numbered list-group-flush">${stepsHtml}</ol>
           </li>
@@ -125,7 +126,9 @@ async function fetchRecipes() {
       </article>`;
   
       container.innerHTML += recipeHtml;
-  
+
+
+      
     }
   
   }
