@@ -1,8 +1,10 @@
 
 function displayRecipes(recipes) {
+    let id = 1;
     const container = document.querySelector("#all-recipes");
     container.innerHTML = "";
-  
+    console.log(recipes);
+
     recipes.forEach((recipe) => {
       const ingredientsHtml = recipe.ingredients.map(
         (ingredient) => `<li class="list-group-item">${ingredient.nom}: ${ingredient.quantite}</li>`
@@ -16,7 +18,7 @@ function displayRecipes(recipes) {
         <article class="col-sm-12 col-md-4">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
-              <h3>${recipe.nom}</h3>
+              <h3>${recipe.nom} <i id='${recipe.id}' class="fa-regular fa-star" onclick="addFavorite('${recipe.nom}', '${recipe.id}')"></i></h3>
             </li>
             <li class="list-group-item">
               <h4>${recipe.categorie}</h4>
@@ -37,7 +39,33 @@ function displayRecipes(recipes) {
     });
   }
 
+function addFavorite(recipeName, id) {
+    document.getElementById(id).classList.remove("fa-regular")
+    document.getElementById(id).classList.add("fa-solid")
+    document.getElementById(id).removeAttribute("onclick")
+    document.getElementById(id).setAttribute("onclick", `removeFavorite('${recipeName}', '${id}')`)
+    localStorage.setItem(recipeName, 1)
+    console.log(localStorage);
+}
+function removeFavorite(recipeName, id) {
 
+    document.getElementById(id).classList.remove("fa-solid")
+    document.getElementById(id).classList.add("fa-regular")
+    document.getElementById(id).removeAttribute("onclick")
+    document.getElementById(id).setAttribute("onclick", `addFavorite('${recipeName}', '${id}')`)
+    localStorage.removeItem(recipeName, 1)
+}
+
+function checkFavorite(recipes) {
+recipes.forEach(recipe => {
+    if(localStorage.getItem(recipe.nom))
+    {
+        addFavorite(recipe.nom, recipe.id)
+    }
+
+});
+    
+}
   // Fonction pour récupérer les données JSON
 async function fetchRecipes() {
     try {
@@ -67,7 +95,6 @@ async function fetchRecipes() {
     const container = document.querySelector("#random-recipes");
     container.innerHTML = "";
     for (let i = 0; i < numbers.length; i++) {
-        console.log(recipes[numbers[i]].ingredients);
       const ingredientsHtml = recipes[numbers[i]].ingredients.map(
         (ingredient) => `<li class="list-group-item">${ingredient.nom}: ${ingredient.quantite}</li>`
       ).join("");
