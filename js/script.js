@@ -11,5 +11,5 @@ fetchRecipes().then((recipes) => {
     displayRecipes(filteredRecipes);
   });
 });
-
+localStorage.setItem("Liste des courses", [])
 

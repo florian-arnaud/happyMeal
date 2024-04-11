@@ -7,9 +7,8 @@ function displayRecipes(recipes) {
 
     recipes.forEach((recipe) => {
       const ingredientsHtml = recipe.ingredients.map(
-        (ingredient) => `<li class="list-group-item">${ingredient.nom}: ${ingredient.quantite}</li>`
+        (ingredient) => `<li class="list-group-item">${ingredient.nom}: ${ingredient.quantite} <i class="fa-solid fa-plus" onclick="addIngredientToList('${ingredient.nom}')"></i></li>`
       ).join("");
-  
       const stepsHtml = recipe.etapes.map(
         (step) => `<li class="list-group-item">${step}</li>`
       ).join("");
@@ -39,6 +38,8 @@ function displayRecipes(recipes) {
     });
   }
 
+  /* FONCTIONS LOCAL STORAGE*/
+  // Ajoute la recette en favori et change l'icone de favori
 function addFavorite(recipeName, id) {
     document.getElementById(id).classList.remove("fa-regular")
     document.getElementById(id).classList.add("fa-solid")
@@ -47,8 +48,9 @@ function addFavorite(recipeName, id) {
     localStorage.setItem(recipeName, 1)
     console.log(localStorage);
 }
-function removeFavorite(recipeName, id) {
+  // Enlève la recette des favoris et change l'icone de favori
 
+function removeFavorite(recipeName, id) {
     document.getElementById(id).classList.remove("fa-solid")
     document.getElementById(id).classList.add("fa-regular")
     document.getElementById(id).removeAttribute("onclick")
@@ -56,6 +58,13 @@ function removeFavorite(recipeName, id) {
     localStorage.removeItem(recipeName, 1)
 }
 
+function addIngredientToList(ingredient) {
+    console.log(ingredient);
+    let ingredientsList = []
+    localStorage.setItem("Liste des courses", ingredient)
+    ingredientsList.push(localStorage.getItem("Liste des courses"))
+
+}
 function checkFavorite(recipes) {
 recipes.forEach(recipe => {
     if(localStorage.getItem(recipe.nom))
