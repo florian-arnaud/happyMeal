@@ -7,7 +7,7 @@ function displayRecipes(recipes) {
 
     recipes.forEach((recipe) => {
       const ingredientsHtml = recipe.ingredients.map(
-        (ingredient) => `<li class="list-group-item">${ingredient.nom}: ${ingredient.quantite} <i class="fa-solid fa-plus" onclick="addIngredientToList('${ingredient.nom}')"></i></li>`
+        (ingredient) => `<li class="list-group-item">${ingredient.nom}: ${ingredient.quantite} <i class="fa-solid fa-cart-shopping" onclick="addIngredientToList('${ingredient.nom}')"></i></li>`
       ).join("");
       const stepsHtml = recipe.etapes.map(
         (step) => `<li class="list-group-item">${step}</li>`
