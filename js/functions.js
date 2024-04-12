@@ -37,6 +37,46 @@ function displayRecipes(recipes) {
   });
 }
 
+function displayRandomRecipes(recipes) {
+  let numbers = generateRandomNumbers(recipes)
+  const container = document.querySelector("#random-recipes");
+  container.innerHTML = "";
+  for (let i = 0; i < numbers.length; i++) {
+    const ingredientsHtml = recipes[numbers[i]].ingredients.map(
+      (ingredient) => `<li class="list-group-item">${ingredient.nom}: ${ingredient.quantite} <i class="fa-solid fa-cart-shopping text-success" onclick="addIngredientToList('${ingredient.nom}')"></i> <i class="fa-solid fa-trash text-danger" onclick="removeIngredientFromList('${ingredient.nom}')"></i></li>`
+    ).join("");
+
+    const stepsHtml = recipes[numbers[i]].etapes.map(
+      (step) => `<li class="list-group-item">${step}</li>`
+    ).join("");
+
+    const recipeHtml = `
+      <article class="col-sm-12 col-md-4">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <h3 data-bs-toggle="collapse" data-bs-target=".recipeDetails-random-${recipes[numbers[i]].id}">${recipes[numbers[i]].nom} <i id='${recipes[numbers[i]].id}' class="fa-regular fa-star" onclick="addFavorite('${recipes[numbers[i]].nom}', '${recipes[numbers[i]].id}')"></i></h3>
+
+          </li>
+          <li class="list-group-item">
+            <h4>${recipes[numbers[i]].categorie}</h4>
+            <p><i class="fa-regular fa-clock"></i>${recipes[numbers[i]].temps_preparation}</p>
+          </li>
+          <li class="list-group-item collapse recipeDetails-random-${recipes[numbers[i]].id}">
+            <h4>Ingrédients</h4>
+            <ul class="list-group list-group-flush">${ingredientsHtml}</ul>
+          </li>
+          <li class="list-group-item collapse recipeDetails-random-${recipes[numbers[i]].id}"">
+            <h4>Étapes</h4>
+            <ol class="list-group list-group-numbered list-group-flush">${stepsHtml}</ol>
+          </li>
+        </ul>
+      </article>`;
+
+    container.innerHTML += recipeHtml;
+  }
+
+}
+
 /* FONCTIONS LOCAL STORAGE*/
 // Ajoute la recette en favori et change l'icone de favori
 function addFavorite(recipeName, id) {
@@ -126,48 +166,7 @@ function generateRandomNumbers(recipes) {
   return numbers;
 }
 
-function displayRandomRecipes(recipes) {
-  let numbers = generateRandomNumbers(recipes)
-  const container = document.querySelector("#random-recipes");
-  container.innerHTML = "";
-  for (let i = 0; i < numbers.length; i++) {
-    const ingredientsHtml = recipes[numbers[i]].ingredients.map(
-      (ingredient) => `<li class="list-group-item">${ingredient.nom}: ${ingredient.quantite}</li>`
-    ).join("");
 
-    const stepsHtml = recipes[numbers[i]].etapes.map(
-      (step) => `<li class="list-group-item">${step}</li>`
-    ).join("");
-
-    const recipeHtml = `
-      <article class="col-sm-12 col-md-4">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            <h3 data-bs-toggle="collapse" data-bs-target=".recipeDetails-random-${recipes[numbers[i]].id}">${recipes[numbers[i]].nom} <i id='${recipes[numbers[i]].id}' class="fa-regular fa-star" onclick="addFavorite('${recipes[numbers[i]].nom}', '${recipes[numbers[i]].id}')"></i></h3>
-
-          </li>
-          <li class="list-group-item">
-            <h4>${recipes[numbers[i]].categorie}</h4>
-            <p><i class="fa-regular fa-clock"></i>${recipes[numbers[i]].temps_preparation}</p>
-          </li>
-          <li class="list-group-item collapse recipeDetails-random-${recipes[numbers[i]].id}">
-            <h4>Ingrédients</h4>
-            <ul class="list-group list-group-flush">${ingredientsHtml}</ul>
-          </li>
-          <li class="list-group-item collapse recipeDetails-random-${recipes[numbers[i]].id}"">
-            <h4>Étapes</h4>
-            <ol class="list-group list-group-numbered list-group-flush">${stepsHtml}</ol>
-          </li>
-        </ul>
-      </article>`;
-
-    container.innerHTML += recipeHtml;
-
-
-
-  }
-
-}
 
 
 // Fonction pour filtrer les recettes

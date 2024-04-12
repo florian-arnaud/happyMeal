@@ -11,4 +11,4 @@ fetchRecipes().then((recipes) => {
   });
 });
 
-generateIngredientsFile()
+document.getElementById("ingredientListButton").addEventListener("click", generateIngredientsFile)
