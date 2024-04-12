@@ -11,3 +11,4 @@ fetchRecipes().then((recipes) => {
   });
 });
 
+generateIngredientsFile()
