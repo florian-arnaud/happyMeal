@@ -3,11 +3,10 @@ function displayRecipes(recipes) {
     let id = 1;
     const container = document.querySelector("#all-recipes");
     container.innerHTML = "";
-    console.log(recipes);
 
     recipes.forEach((recipe) => {
       const ingredientsHtml = recipe.ingredients.map(
-        (ingredient) => `<li class="list-group-item">${ingredient.nom}: ${ingredient.quantite} <i class="fa-solid fa-cart-shopping" onclick="addIngredientToList('${ingredient.nom}')"></i></li>`
+        (ingredient) => `<li class="list-group-item">${ingredient.nom}: ${ingredient.quantite} <i class="fa-solid fa-cart-shopping text-success" onclick="addIngredientToList('${ingredient.nom}')"></i> <i class="fa-solid fa-trash text-danger" onclick="removeIngredientFromList('${ingredient.nom}')"></i></li>`
       ).join("");
       const stepsHtml = recipe.etapes.map(
         (step) => `<li class="list-group-item">${step}</li>`
@@ -59,12 +58,15 @@ function removeFavorite(recipeName, id) {
 }
 
 function addIngredientToList(ingredient) {
-    console.log(ingredient);
-    let ingredientsList = []
-    localStorage.setItem("Liste des courses", ingredient)
-    ingredientsList.push(localStorage.getItem("Liste des courses"))
-
+  localStorage.setItem(ingredient, "Ingredients");
+  console.log(localStorage);
 }
+
+function removeIngredientFromList(ingredient) {
+  localStorage.removeItem(ingredient);
+  console.log(localStorage);
+}
+
 function checkFavorite(recipes) {
 recipes.forEach(recipe => {
     if(localStorage.getItem(recipe.nom))

@@ -1,6 +1,5 @@
 fetchRecipes().then((recipes) => {
   // Accéder et afficher les recettes
-
   displayRecipes(recipes)
   displayRandomRecipes(recipes)
   checkFavorite(recipes)
@@ -11,5 +10,4 @@ fetchRecipes().then((recipes) => {
     displayRecipes(filteredRecipes);
   });
 });
-localStorage.setItem("Liste des courses", [])
 
